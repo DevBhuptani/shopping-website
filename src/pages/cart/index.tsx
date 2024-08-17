@@ -5,13 +5,15 @@ import {
 import { ArrowLeftIcon, ArrowRightIcon, X } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
+import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 
-// ProductCart component that displays the items in the shopping cart
 const ProductCart = () => {
   // Accessing cart items from the Redux store
   const { cartItems } = useSelector((state: any) => state.shopping);
   const dispatch = useDispatch();
+  const router = useRouter(); // Initialize useRouter
 
   // Handle quantity change for an item
   const handleQuantityChange = (
@@ -36,14 +38,20 @@ const ProductCart = () => {
     );
   };
 
+  // Handle checkout button click
+  const handleCheckout = () => {
+    toast.success('Thank you for purchasing the products!!');
+    setTimeout(() => {
+      router.push('/'); // Redirect to home page after a delay
+    }, 1000);
+  };
+
   return (
     <div className="container mx-auto mb-20 min-h-screen">
-      {/* Cart Title */}
       <h1 className="leading-relaxed font-primary font-extrabold text-4xl text-center text-palette-primary mt-4 py-2 sm:py-4">
         Your Cart
       </h1>
 
-      {/* Cart Table */}
       <div className="min-h-80 max-w-2xl my-4 sm:my-8 mx-auto w-full">
         <table className="mx-auto">
           <thead>
@@ -146,6 +154,7 @@ const ProductCart = () => {
           aria-label="checkout-products"
           className="bg-palette-primary text-white text-lg font-primary font-semibold pt-2 pb-1 leading-relaxed flex justify-center items-center focus:ring-1 focus:ring-palette-light focus:outline-none w-full hover:bg-palette-dark rounded-sm"
           disabled={cartItems?.length === 0} // Disable if cart is empty
+          onClick={handleCheckout}
         >
           Check Out <ArrowRightIcon />
         </button>
