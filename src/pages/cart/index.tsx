@@ -1,4 +1,5 @@
 import {
+  clearCart,
   removeFromCart,
   updateCartQuantity,
 } from '@/store/slices/shoppingSlice';
@@ -42,6 +43,7 @@ const ProductCart = () => {
   const handleCheckout = () => {
     toast.success('Thank you for purchasing the products!!');
     setTimeout(() => {
+      dispatch(clearCart()); // Clear the cart items
       router.push('/'); // Redirect to home page after a delay
     }, 1000);
   };

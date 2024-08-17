@@ -59,11 +59,16 @@ export const shoppingSlice = createSlice({
         (item) => item.id !== action.payload
       );
     },
+
+    // Action to clear the cart
+    clearCart: (state) => {
+      state.cartItems = [];
+    },
   },
 });
 
 // Export actions to be used in components
-export const { addToCart, updateCartQuantity, removeFromCart } =
+export const { addToCart, updateCartQuantity, removeFromCart, clearCart } =
   shoppingSlice.actions;
 
 // Export the reducer to be used in the store configuration
