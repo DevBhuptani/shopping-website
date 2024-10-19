@@ -15,11 +15,6 @@ const OrderSchema = new mongoose.Schema({
     },
   ],
   totalAmount: { type: Number, required: true },
-  orderStatus: {
-    type: String,
-    enum: ['pending', 'completed', 'shipped', 'canceled'],
-    default: 'pending',
-  },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 });

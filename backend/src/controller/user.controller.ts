@@ -25,8 +25,8 @@ const signUp = async (req: Request, res: Response) => {
       body.password,
       config.SALT_ROUND
     );
+    
     body.password = encryptedPassword;
-
     body.isLoggedIn = true;
 
     // Set isAdmin based on specific condition
@@ -43,21 +43,6 @@ const signUp = async (req: Request, res: Response) => {
         .json({ message: 'Please enter valid credentials', data: {} });
     }
 
-    // Generate a JWT token for the new user
-    const token = jwt.sign(
-      {
-        userId: user?.userId,
-        name: user?.name,
-        email: user?.email,
-        role: user?.role,
-      },
-      config.SECRET_KEY,
-      {
-        expiresIn: config.JWT_EXPIRE,
-      }
-    );
-    res.cookie('jwt', token, { httpOnly: true, secure: true, maxAge: 86400 });
-
     return res.status(200).json({
       status: 200,
       message: 'Account created Successfully',
@@ -66,7 +51,6 @@ const signUp = async (req: Request, res: Response) => {
         name: user?.name,
         email: user?.email,
         role: user?.role,
-        token,
       },
     });
   } catch (error) {

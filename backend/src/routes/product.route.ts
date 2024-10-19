@@ -7,11 +7,18 @@ import {
 } from '../controller/product.controller';
 import validator from '../validation';
 import { productSchema } from '../validation/product.validation';
+import isAdminUser from '../middleware/isAdminUser';
 
 const router = Router();
 
 router.get('/', getAllProducts);
-router.get('/:asin', authorization, individualProducts);
-router.post('/', validator(productSchema, 'body'), addProducts);
+router.get('/:productId', authorization, individualProducts);
+router.post(
+  '/',
+  authorization,
+  isAdminUser,
+  validator(productSchema, 'body'),
+  addProducts
+);
 
 export default router;
