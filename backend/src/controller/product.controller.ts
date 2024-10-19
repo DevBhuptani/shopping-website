@@ -23,8 +23,10 @@ const getAllProducts = async (req: Request, res: Response) => {
 
 const individualProducts = async (req: Request, res: Response) => {
   try {
-    const { asin } = req.params;
-    const product = await ProductModel.findOne({ asin }).select('-__v -_id');
+    const { productId } = req.params;
+    const product = await ProductModel.findOne({ productId }).select(
+      '-__v -_id'
+    );
 
     if (!product) {
       return res.status(404).json({
@@ -46,10 +48,11 @@ const individualProducts = async (req: Request, res: Response) => {
   }
 };
 
-const addProducts = async (req: any, res: Response) => {
+const addProducts = async (req: Request, res: Response) => {
   try {
-    const { asin, ...otherProductDetails } = req.body;
-    const existingProduct = await ProductModel.findOne({ asin }).select(
+    const { productId, ...otherProductDetails } = req.body;
+
+    const existingProduct = await ProductModel.findOne({ productId }).select(
       '-__v -_id'
     );
 
@@ -61,12 +64,13 @@ const addProducts = async (req: any, res: Response) => {
     }
 
     const newProduct = await ProductModel.create({
-      asin,
+      productId,
       ...otherProductDetails,
     });
-    return res.status(200).json({
-      status: 200,
-      message: 'Product Added Successfully!!',
+
+    return res.status(201).json({
+      status: 201,
+      message: 'Product added successfully!',
       data: newProduct,
     });
   } catch (error) {
@@ -76,25 +80,5 @@ const addProducts = async (req: any, res: Response) => {
       .json({ status: 500, message: 'Something went wrong. Please try again' });
   }
 };
-
-// const updateAllProductQuantities = async (req: Request, res: Response) => {
-//   try {
-//     const result = await ProductModel.updateMany(
-//       {},
-//       { $set: { quantity: 10 } }
-//     );
-
-//     return res.status(200).json({
-//       status: 200,
-//       message: `Successfully updated ${result.modifiedCount} products.`,
-//     });
-//   } catch (error) {
-//     console.log(error);
-//     return res.status(500).json({
-//       status: 500,
-//       message: 'Something went wrong. Please try again.',
-//     });
-//   }
-// };
 
 export { getAllProducts, addProducts, individualProducts };

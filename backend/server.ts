@@ -1,4 +1,4 @@
-import { Errback, NextFunction, Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import routes from './src/routes';
 import connectToDataBase from './config/database';
 const dotenv = require('dotenv');
