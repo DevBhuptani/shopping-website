@@ -8,23 +8,21 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addToCart } from '@/store/slices/shoppingSlice';
 
 const ProductDetail = () => {
-  const router = useRouter(); // Router object to access URL parameters
-  const { slug } = router.query; // Product slug from URL
-  const [product, setProduct] = useState<any>(null); // State for storing product details
-  const [quantity, setQuantity] = useState(1); // State for storing selected quantity
+  const router = useRouter();
+  const { productId } = router.query;
+  const [product, setProduct] = useState<any>(null);
+  const [quantity, setQuantity] = useState(1);
 
-  const { cartItems } = useSelector((state: any) => state.shopping); // Cart items from Redux store
+  const { cartItems } = useSelector((state: any) => state.shopping);
 
-  const dispatch = useDispatch(); // Dispatch function from Redux
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    if (slug) {
-      // Fetch and set product data based on slug
-      const selectedProduct = shopData.find((p) => p.asin === slug);
+    if (productId) {
+      const selectedProduct = shopData.find((p) => p.asin === productId);
       if (selectedProduct) {
         setProduct(selectedProduct);
 
-        // Set quantity if product is already in cart
         const cartItem = cartItems.find(
           (item: any) => item.asin === selectedProduct.asin
         );
@@ -33,19 +31,17 @@ const ProductDetail = () => {
         }
       }
     }
-  }, [slug, cartItems]); // Dependencies for the effect
+  }, [productId, cartItems]);
 
   if (!product) {
-    return <div>Loading...</div>; // Show loading indicator if product is not loaded
+    return <div>Loading...</div>;
   }
 
-  // Handle input changes for quantity
   const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = Math.max(1, Number(e.target.value)); // Ensure quantity is at least 1
+    const value = Math.max(1, Number(e.target.value));
     setQuantity(value);
   };
 
-  // Handle adding product to the cart
   const handleAddToCart = () => {
     dispatch(addToCart({ ...product, quantity }));
   };
@@ -53,7 +49,6 @@ const ProductDetail = () => {
   return (
     <div className="min-h-screen py-12 sm:pt-20">
       <div className="flex flex-col justify-center items-center md:flex-row md:items-start space-y-8 md:space-y-0 md:space-x-4 lg:space-x-8 max-w-6xl w-11/12 mx-auto">
-        {/* Product Image Section */}
         <div className="w-full md:w-1/2 max-w-md border border-palette-lighter bg-white rounded shadow-lg">
           <div className="relative h-96">
             <Image
@@ -80,7 +75,6 @@ const ProductDetail = () => {
             />
           </div>
         </div>
-        {/* Product Details Section */}
         <div className="flex flex-col justify-between h-full w-full md:w-1/2 max-w-xs mx-auto space-y-4 min-h-128">
           <Link
             href="/"

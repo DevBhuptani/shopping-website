@@ -25,7 +25,7 @@ const signUp = async (req: Request, res: Response) => {
       body.password,
       config.SALT_ROUND
     );
-    
+
     body.password = encryptedPassword;
     body.isLoggedIn = true;
 
@@ -43,15 +43,9 @@ const signUp = async (req: Request, res: Response) => {
         .json({ message: 'Please enter valid credentials', data: {} });
     }
 
-    return res.status(200).json({
-      status: 200,
+    return res.status(201).json({
+      status: 201,
       message: 'Account created Successfully',
-      data: {
-        userId: user?.userId,
-        name: user?.name,
-        email: user?.email,
-        role: user?.role,
-      },
     });
   } catch (error) {
     console.log('error', error);

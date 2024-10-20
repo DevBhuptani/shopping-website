@@ -1,18 +1,19 @@
 import { Toaster } from 'react-hot-toast';
-import Footer from '../Footer'; // Import the Footer component
-import Navbar from '../Navbar'; // Import the Navbar component
+import Footer from '../Footer';
+import Navbar from '../Navbar';
+import { useRouter } from 'next/router';
 
-// Layout component to wrap around page content
 export default function Layout({ children }: any) {
+  const router = useRouter();
+
+  const noHeaderFooter = ['/login', '/register'];
+
   return (
     <>
-      {/* Render the Navbar at the top of the page */}
-      <Navbar />
-      {/* Main content area where child components or pages will be rendered */}
+      {!noHeaderFooter.includes(router.pathname) && <Navbar />}
       <Toaster position="bottom-right" />
       <main>{children}</main>
-      {/* Render the Footer at the bottom of the page */}
-      <Footer />
+      {!noHeaderFooter.includes(router.pathname) && <Footer />}
     </>
   );
 }

@@ -11,26 +11,22 @@ import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 
 const ProductCart = () => {
-  // Accessing cart items from the Redux store
   const { cartItems } = useSelector((state: any) => state.shopping);
   const dispatch = useDispatch();
-  const router = useRouter(); // Initialize useRouter
+  const router = useRouter(); 
 
-  // Handle quantity change for an item
   const handleQuantityChange = (
     e: React.ChangeEvent<HTMLInputElement>,
     item: any
   ) => {
-    const quantity = Math.max(1, Number(e.target.value)); // Ensure quantity is at least 1
+    const quantity = Math.max(1, Number(e.target.value)); 
     dispatch(updateCartQuantity({ id: item.id, quantity }));
   };
 
-  // Handle removing an item from the cart
   const handleRemoveItem = (item: any) => {
     dispatch(removeFromCart(item.id));
   };
 
-  // Calculate the subtotal price of items in the cart
   const calculateSubtotal = () => {
     return cartItems.reduce(
       (acc: number, item: any) =>
@@ -39,12 +35,11 @@ const ProductCart = () => {
     );
   };
 
-  // Handle checkout button click
   const handleCheckout = () => {
     toast.success('Thank you for purchasing the products!!');
     setTimeout(() => {
-      dispatch(clearCart()); // Clear the cart items
-      router.push('/'); // Redirect to home page after a delay
+      dispatch(clearCart());
+      router.push('/'); 
     }, 1000);
   };
 
@@ -67,15 +62,12 @@ const ProductCart = () => {
             </tr>
           </thead>
           <tbody className="divide-y divide-palette-lighter">
-            {/* Iterate over cart items to display each product in the cart */}
             {cartItems?.map((item: any) => (
               <tr
                 className="text-sm sm:text-base text-gray-600 text-center"
                 key={item?.id}
               >
-                {/* Product details and link */}
                 <td className="font-primary font-medium px-4 sm:px-6 py-4 flex items-center">
-                  {/* Product Image */}
                   <Image
                     src={item?.product_photo}
                     alt={item?.product_title}
@@ -84,7 +76,6 @@ const ProductCart = () => {
                     height={32}
                     className="hidden sm:inline-flex"
                   />
-                  {/* Product title with a link to the product page */}
                   <Link
                     href={`/products/${item?.asin}`}
                     className="pt-1 hover:text-palette-dark"
@@ -95,7 +86,6 @@ const ProductCart = () => {
                   </Link>
                 </td>
 
-                {/* Quantity Input */}
                 <td className="font-primary font-medium px-4 sm:px-6 py-4">
                   <input
                     type="number"
@@ -110,7 +100,6 @@ const ProductCart = () => {
                   />
                 </td>
 
-                {/* Total Price for the item */}
                 <td className="font-primary text-base font-light px-4 sm:px-6 py-4 hidden sm:table-cell">
                   <span className="text-lg">
                     {(
@@ -119,7 +108,6 @@ const ProductCart = () => {
                   </span>
                 </td>
 
-                {/* Remove Item Button */}
                 <td className="font-primary font-medium px-4 sm:px-6 py-4">
                   <button
                     aria-label="delete-item"
@@ -131,7 +119,6 @@ const ProductCart = () => {
               </tr>
             ))}
 
-            {/* Subtotal Calculation */}
             <tr className="text-center">
               <td></td>
               <td className="font-primary text-base text-gray-600 font-semibold uppercase px-4 sm:px-6 py-4">
@@ -149,19 +136,16 @@ const ProductCart = () => {
         </table>
       </div>
 
-      {/* Checkout and Back to Products Buttons */}
       <div className="max-w-sm mx-auto space-y-4 px-2">
-        {/* Checkout Button */}
         <button
           aria-label="checkout-products"
           className="bg-palette-primary text-white text-lg font-primary font-semibold pt-2 pb-1 leading-relaxed flex justify-center items-center focus:ring-1 focus:ring-palette-light focus:outline-none w-full hover:bg-palette-dark rounded-sm"
-          disabled={cartItems?.length === 0} // Disable if cart is empty
+          disabled={cartItems?.length === 0}
           onClick={handleCheckout}
         >
           Check Out <ArrowRightIcon />
         </button>
 
-        {/* Back to Products Link */}
         <Link
           href="/"
           aria-label="back-to-products"
